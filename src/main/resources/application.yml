@@ -15,5 +15,4 @@ spring:
 
 logging.level:
   org.hibernate.SQL: debug
-  org.hibername.type: trace
-
+#  org.hibername.type: trace
