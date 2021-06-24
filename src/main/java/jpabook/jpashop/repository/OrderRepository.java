@@ -6,19 +6,29 @@ import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.domain.QMember;
 import jpabook.jpashop.domain.QOrder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
+public interface OrderRepository
+        extends JpaRepository<Order, Long>
+        , JpaSpecificationExecutor<Order> { // JPA가 제공하는 명세 기능을 사용해 검색을 구현하기 위해 상속
+}
+
+/* Spring Data JPA 적용 전 코드
 @Repository
 public class OrderRepository {
     private final EntityManager em;
-    private final JPAQueryFactory query;
+    private JPAQueryFactory query;
 
     public OrderRepository(EntityManager em) {
         this.em = em;
@@ -132,7 +142,7 @@ public class OrderRepository {
     }
 
     public List<Order> findAllWithItem() {
-        /*
+        *//*
         1대다 조인을 사용하면 order가 orderItem의 개수만큼 증가한다.
         따라서 결과는 같은 order 엔티티의 수가 증가하게 된다 => JPQL의 distinct로 해결 가능!
 
@@ -142,7 +152,7 @@ public class OrderRepository {
             - OutOfMemory의 위험
 
         또한, 컬렉션 페치 조인은 한 개만 사용하자. 가능할 수도 있지만 데이터의 정합성이 틀어질 수 있다.
-         */
+         *//*
         return em.createQuery(
                 "select distinct o from Order o" +
                         " join fetch o.member m" +
@@ -162,4 +172,4 @@ public class OrderRepository {
                 .getResultList();
     }
 
-}
+}*/
